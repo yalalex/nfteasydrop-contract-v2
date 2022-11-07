@@ -1,15 +1,13 @@
 import { ethers } from 'hardhat';
-import { addresses } from '../test/addresses';
 
 async function main() {
   const [owner] = await ethers.getSigners();
 
-  const quantity = addresses.length;
+  const quantity = 10000;
   const id = 1;
   const amount = 1;
   const ids = Array(quantity).fill(id);
   const amounts = Array(quantity).fill(amount);
-  const sumAmount = amounts.reduce((x, y) => x + y);
 
   const NFTEasyDrop = await ethers.getContractFactory('NFTEasyDropV2Test');
   const nfteasydrop = await NFTEasyDrop.deploy();
@@ -33,12 +31,12 @@ async function main() {
   );
 
   const Mock20 = await ethers.getContractFactory('Mock20');
-  const mock20 = await Mock20.deploy(sumAmount * 3);
+  const mock20 = await Mock20.deploy(quantity * 10);
   await mock20.deployed();
 
   console.log(
     `Mock20 contract has been deployed to ${mock20.address} address, ${
-      sumAmount * 3
+      quantity * 10
     } tokens has been minted to ${owner.address} address`
   );
 }

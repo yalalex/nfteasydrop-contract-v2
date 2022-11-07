@@ -7,8 +7,6 @@ interface IERC721 {
     address to,
     uint256 tokenId
   ) external;
-
-  function ownerOf(uint256 tokenId) external view returns (address);
 }
 
 interface IERC1155 {
@@ -19,11 +17,6 @@ interface IERC1155 {
     uint256 amount,
     bytes calldata data
   ) external;
-
-  function balanceOf(address account, uint256 id)
-    external
-    view
-    returns (uint256);
 }
 
 interface IERC20 {
@@ -239,7 +232,7 @@ contract NFTEasyDropV2Test {
     if (checkAllowance(_token) < totalAmount) revert InsufficientAllowance();
     if (_to.length != _amount.length) revert ArraysHaveDifferentLength();
     for (uint i = 0; i < _to.length; i++) {
-      IERC20(_token).transferFrom(msg.sender, _to[i], _amount[i]);
+      IERC20(_token).transferFrom(msg.sender, _to[i], _amount[i] * 10**18);
     }
     received += msg.value;
     emit AirdropERC20(msg.sender, _token, block.timestamp);

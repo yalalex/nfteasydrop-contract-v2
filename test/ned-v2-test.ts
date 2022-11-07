@@ -11,7 +11,8 @@ describe('NFTEasyDropV2Test', () => {
   const amounts = Array.from({ length: quantity }, () =>
     Math.floor(Math.random() * 10)
   );
-  const sumAmount = amounts.reduce((x, y) => x + y);
+  const sumAmountInt = amounts.reduce((x, y) => x + y);
+  const sumAmount = ethers.utils.parseEther(sumAmountInt.toString());
 
   const deployNED = async () => {
     const [owner, user] = await ethers.getSigners();
@@ -233,7 +234,9 @@ describe('NFTEasyDropV2Test', () => {
       .to.emit(nfteasydrop, 'AirdropERC20')
       .withArgs(owner.address, mock20.address, await time.latest());
 
-    expect(await mock20.balanceOf(addresses[5])).to.equal(amounts[5]);
+    expect(await mock20.balanceOf(addresses[5])).to.equal(
+      ethers.utils.parseEther(amounts[5].toString())
+    );
   });
 
   it('Should return correct NFT token approval status', async () => {
@@ -256,14 +259,17 @@ describe('NFTEasyDropV2Test', () => {
         mock20.address,
         addresses,
         amounts,
-        sumAmount + 1
+        ethers.utils.parseEther((sumAmountInt + 1).toString())
       )
     ).to.be.revertedWithCustomError(nfteasydrop, 'InsufficientBalance');
   });
 
   it('Should revert erc-20 airdrop with custom error InsufficientAllowance', async () => {
     const { nfteasydrop, mock20 } = await loadFixture(deployWithMocks);
-    await mock20.approve(nfteasydrop.address, sumAmount - 1);
+    await mock20.approve(
+      nfteasydrop.address,
+      ethers.utils.parseEther((sumAmountInt - 1).toString())
+    );
     await expect(
       nfteasydrop.airdropERC20(mock20.address, addresses, amounts, sumAmount)
     ).to.be.revertedWithCustomError(nfteasydrop, 'InsufficientAllowance');

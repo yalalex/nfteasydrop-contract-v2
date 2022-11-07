@@ -8,6 +8,9 @@ dotenv.config();
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 const POLYGON_API_KEY = process.env.POLYGON_API_KEY;
+const ARBITRUM_API_KEY = process.env.ARBITRUM_API_KEY;
+const OPTIMISM_API_KEY = process.env.OPTIMISM_API_KEY;
+const BSC_API_KEY = process.env.BSC_API_KEY;
 
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL;
 const MAINNET_RPC_URL = process.env.MAINNET_RPC_URL;
@@ -16,6 +19,7 @@ const ARBITRUM_RPC_URL = process.env.ARBITRUM_RPC_URL;
 const OPTIMISM_RPC_URL = process.env.OPTIMISM_RPC_URL;
 const BSC_RPC_URL = process.env.BSC_RPC_URL;
 const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL;
+
 const TESTING_PRIVATE_KEY = process.env.TESTING_PRIVATE_KEY || '';
 const MAIN_PRIVATE_KEY = process.env.MAIN_PRIVATE_KEY || '';
 
@@ -28,34 +32,34 @@ const config: HardhatUserConfig = {
     localhost: {
       chainId: 31337,
     },
-    mumbai: {
-      accounts: [TESTING_PRIVATE_KEY],
-      url: MUMBAI_RPC_URL,
-      chainId: 80001,
-    },
     goerli: {
       accounts: [TESTING_PRIVATE_KEY],
       url: GOERLI_RPC_URL,
       chainId: 5,
     },
     mainnet: {
-      // accounts: [MAIN_PRIVATE_KEY],
+      accounts: [MAIN_PRIVATE_KEY],
       url: MAINNET_RPC_URL,
       chainId: 1,
+      // gasPrice: 10000000000,
     },
     polygon: {
+      accounts: [MAIN_PRIVATE_KEY],
       url: POLYGON_RPC_URL,
       chainId: 137,
     },
     arbitrum: {
+      accounts: [MAIN_PRIVATE_KEY],
       url: ARBITRUM_RPC_URL,
       chainId: 42161,
     },
     optimism: {
+      accounts: [MAIN_PRIVATE_KEY],
       url: OPTIMISM_RPC_URL,
       chainId: 10,
     },
     bsc: {
+      accounts: [MAIN_PRIVATE_KEY],
       url: BSC_RPC_URL,
       chainId: 56,
     },
